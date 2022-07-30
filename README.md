@@ -1,4 +1,3 @@
-# MicroPython-VFD-display-simple-drive
 VFD display (8-MD-06INKM) simple driver
 
 使用方法：
