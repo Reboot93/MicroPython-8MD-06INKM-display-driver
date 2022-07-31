@@ -35,19 +35,15 @@ SET_DISPLAY_TIMING = const(0xE0)
 SET_DIMMING_DATA = const(0xE4)
 SET_DISPLAT_LIGHT_ON = const(0xE8)
 SET_DISPLAT_LIGHT_OFF = const(0xEA)
-SET_DISPLAT_LIGHT_DEBUG = const(0xEB)
+SET_STAND_BY_MODE = const(0xEC)
 
 
 class VFD(framebuf.FrameBuffer):
 
-    def __init__(self, spi, res, cs, en, digits=8, dimming=255, debug=False):
+    def __init__(self, spi, res, cs, en, digits=8, dimming=255):
         self.rate = 5000000
         self.digits = digits
         self.dimming = dimming
-        if debug:
-            self.display_mode = SET_DISPLAT_LIGHT_DEBUG
-        else:
-            self.display_mode = SET_DISPLAT_LIGHT_ON
         res.init(res.OUT, value=0)
         cs.init(cs.OUT, value=1)
         en.init(en.OUT, value=1)
@@ -56,7 +52,7 @@ class VFD(framebuf.FrameBuffer):
         self.res = res
         self.cs = cs
         self.buffer = bytearray(5 * self.digits)
-        super().__init__(self.buffer, 5 * self.digits, 8, framebuf.MONO_VLSB)
+        super().__init__(self.buffer, 5 * self.digits, 7, framebuf.MONO_VLSB)
         import time
 
         # init VFD display
@@ -76,7 +72,7 @@ class VFD(framebuf.FrameBuffer):
                 # Set Display Dimming data
                 (SET_DIMMING_DATA, self.dimming),
                 # Release the All display OFF
-                (self.display_mode, 0x00)
+                (SET_DISPLAT_LIGHT_ON, 0x00)
         ):
             self.__write_cmd(cmd)
 
@@ -101,7 +97,7 @@ class VFD(framebuf.FrameBuffer):
 
     def show(self):
         buf = bytearray(5)
-        fbuf = framebuf.FrameBuffer(buf, 5, 8, framebuf.MONO_VLSB)
+        fbuf = framebuf.FrameBuffer(buf, 5, 7, framebuf.MONO_VLSB)
         for i in range(self.digits):
             fbuf.fill(0)
             fbuf.blit(self, 0 - (i * 5), 0)
@@ -112,6 +108,12 @@ class VFD(framebuf.FrameBuffer):
     def set_display_dimming(self, dimming: int):
         dimming_data = dimming
         self.__write_cmd((SET_DIMMING_DATA, dimming_data))
+
+    def on(self):
+        self.__write_cmd([SET_STAND_BY_MODE, 0x00])
+
+    def off(self):
+        self.__write_cmd([SET_STAND_BY_MODE | 1, 0x00])
 
     def __write_cmd(self, cmd):
         self.spi.init(baudrate=self.rate, polarity=0, phase=0, firstbit=self.spi.LSB)
