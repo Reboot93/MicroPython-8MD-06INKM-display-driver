@@ -3,7 +3,7 @@
 ## Usage sample
 **使用示例：**
 ``` python
-import framebuf, VFD, time
+import framebuf, Futaba_8MD06INKM, time
 from machine import Pin, freq, SPI
 
 freq(240000000)
@@ -12,7 +12,7 @@ hspi = SPI(1, 5000000)
 en = Pin(4)
 rst = Pin(5)
 cs = Pin(26)
-display = VFD.VFD(hspi, rst, cs, en)
+display = Futaba_8MD06INKM.VFD(hspi, rst, cs, en)
 ```
 ### Framebuf base display
 基于Framebuf显示
