@@ -1,4 +1,4 @@
-#Futaba VFD display (8-MD-06INKM) driver for MicroPython
+#Futaba VFD display (8-MD-06INKM) driver for MicroPython (Framebuf)
 
 ## Usage sample
 **使用示例：**
