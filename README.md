@@ -1,5 +1,7 @@
 #Futaba VFD display (8-MD-06INKM) driver for MicroPython (Framebuf)
 
+[![Sample video](https://res.cloudinary.com/marcomontalbano/image/upload/v1659263094/video_to_markdown/images/youtube--nW1mT3Vwk4U-c05b58ac6eb4c4700831b2b3070cd403.jpg)](https://www.youtube.com/watch?v=nW1mT3Vwk4U "Sample video")
+
 ## Usage sample
 **使用示例：**
 ``` python
