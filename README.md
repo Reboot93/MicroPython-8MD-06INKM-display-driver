@@ -5,7 +5,7 @@
 ## Usage sample
 **使用示例：**
 ``` python
-import framebuf, Futaba_8MD06INKM, time
+import framebuf, futaba_8md06inkm, time
 from machine import Pin, freq, SPI
 
 freq(240000000)
